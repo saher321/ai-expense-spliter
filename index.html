@@ -1,450 +1,496 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Expense Splitter</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
 
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
+      .header h1 {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 0.95em;
-        }
+      .header p {
+        opacity: 0.9;
+        font-size: 0.95em;
+      }
 
-        .content {
-            padding: 30px;
-        }
+      .content {
+        padding: 30px;
+      }
 
-        .section {
-            margin-bottom: 30px;
-        }
+      .section {
+        margin-bottom: 30px;
+      }
 
-        .section-title {
-            font-size: 1.3em;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
+      .section-title {
+        font-size: 1.3em;
+        color: #333;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+      .form-group {
+        margin-bottom: 15px;
+      }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: 500;
-        }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: 500;
+      }
 
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+      }
 
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
 
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+      }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            width: 100%;
-        }
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 100%;
+      }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
 
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-            margin-left: 10px;
-        }
+      .btn-secondary {
+        background: #f0f0f0;
+        color: #333;
+        margin-left: 10px;
+      }
 
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
+      .btn-secondary:hover {
+        background: #e0e0e0;
+      }
 
-        .expense-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
+      .expense-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s;
+      }
 
-        .expense-item:hover {
-            transform: translateX(5px);
-        }
+      .expense-item:hover {
+        transform: translateX(5px);
+      }
 
-        .expense-info {
-            flex: 1;
-        }
+      .expense-info {
+        flex: 1;
+      }
 
-        .expense-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
+      .expense-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+      }
 
-        .expense-details {
-            font-size: 0.9em;
-            color: #666;
-        }
+      .expense-details {
+        font-size: 0.9em;
+        color: #666;
+      }
 
-        .expense-amount {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #667eea;
-            margin-right: 15px;
-        }
+      .expense-amount {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #667eea;
+        margin-right: 15px;
+      }
 
-        .btn-delete {
-            background: #ff4757;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+      .btn-delete {
+        background: #ff4757;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
 
-        .btn-delete:hover {
-            background: #ff3838;
-        }
+      .btn-delete:hover {
+        background: #ff3838;
+      }
 
-        .summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
+      .summary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
 
-        .summary-title {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
+      .summary-title {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
 
-        .person-split {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
+      .person-split {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        margin-bottom: 8px;
+      }
 
-        .person-name {
-            font-weight: 500;
-        }
+      .person-name {
+        font-weight: 500;
+      }
 
-        .person-amount {
-            font-weight: 700;
-        }
+      .person-amount {
+        font-weight: 700;
+      }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
+      .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #999;
+      }
 
-        .empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
+      .empty-state svg {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+        opacity: 0.5;
+      }
 
-        .flex-row {
-            display: flex;
-            gap: 10px;
-        }
+      .flex-row {
+        display: flex;
+        gap: 10px;
+      }
 
-        .flex-row > * {
-            flex: 1;
-        }
+      .flex-row > * {
+        flex: 1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>💰 AI Expense Splitter</h1>
-            <p>Split bills fairly and easily with your friends</p>
+      <div class="header">
+        <h1>💰 AI Expense Splitter</h1>
+        <p>Split bills fairly and easily with your friends</p>
+      </div>
+
+      <div class="content">
+        <div class="section">
+          <div class="section-title">Add Person</div>
+          <div class="flex-row">
+            <input
+              type="text"
+              id="personName"
+              placeholder="Enter person's name"
+            />
+            <button
+              class="btn btn-primary"
+              onclick="addPerson()"
+              style="width: auto"
+            >
+              Add Person
+            </button>
+          </div>
+          <div id="peopleList" style="margin-top: 15px"></div>
         </div>
 
-        <div class="content">
-            <div class="section">
-                <div class="section-title">Add People</div>
-                <div class="flex-row">
-                    <input type="text" id="personName" placeholder="Enter person's name">
-                    <button class="btn btn-primary" onclick="addPerson()" style="width: auto;">Add Person</button>
-                </div>
-                <div id="peopleList" style="margin-top: 15px;"></div>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Add Expense</div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="expenseDesc" placeholder="e.g., Dinner, Groceries">
-                </div>
-                <div class="form-group">
-                    <label>Amount ($)</label>
-                    <input type="number" id="expenseAmount" placeholder="0.00" step="0.01">
-                </div>
-                <div class="form-group">
-                    <label>Paid By</label>
-                    <select id="paidBy"></select>
-                </div>
-                <button class="btn btn-primary" onclick="addExpense()">Add Expense</button>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Expenses</div>
-                <div id="expensesList"></div>
-            </div>
-
-            <div class="summary" id="summary" style="display: none;">
-                <div class="summary-title">💳 Settlement Summary</div>
-                <div id="settlementDetails"></div>
-            </div>
+        <div class="section">
+          <div class="section-title">Add Expense</div>
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              type="text"
+              id="expenseDesc"
+              placeholder="e.g., Dinner, Groceries"
+            />
+          </div>
+          <div class="form-group">
+            <label>Amount ($)</label>
+            <input
+              type="number"
+              id="expenseAmount"
+              placeholder="0.00"
+              step="0.01"
+            />
+          </div>
+          <div class="form-group">
+            <label>Paid By</label>
+            <select id="paidBy"></select>
+          </div>
+          <button class="btn btn-primary" onclick="addExpense()">
+            Add Expense
+          </button>
         </div>
+
+        <div class="section">
+          <div class="section-title">Expenses</div>
+          <div id="expensesList"></div>
+        </div>
+
+        <div class="summary" id="summary" style="display: none">
+          <div class="summary-title">💳 Settlement Summary</div>
+          <div id="settlementDetails"></div>
+        </div>
+      </div>
     </div>
 
     <script>
-    // Data structure
-    let appData = {
+      // Data structure
+      let appData = {
         people: [],
-        expenses: []
-    };
+        expenses: [],
+      };
 
-    // Check if localStorage is available
-    function isLocalStorageAvailable() {
+      // Check if localStorage is available
+      function isLocalStorageAvailable() {
         try {
-            const test = '__localStorage_test__';
-            localStorage.setItem(test, test);
-            localStorage.removeItem(test);
-            return true;
+          const test = "__localStorage_test__";
+          localStorage.setItem(test, test);
+          localStorage.removeItem(test);
+          return true;
         } catch (e) {
-            console.warn('LocalStorage is not available:', e);
-            return false;
+          console.warn("LocalStorage is not available:", e);
+          return false;
         }
-    }
+      }
 
-    const useLocalStorage = isLocalStorageAvailable();
+      const useLocalStorage = isLocalStorageAvailable();
 
-    // Load data from localStorage
-    function loadFromStorage() {
+      // Load data from localStorage
+      function loadFromStorage() {
         if (useLocalStorage) {
-            try {
-                const savedPeople = localStorage.getItem('expenseSplitter_people');
-                const savedExpenses = localStorage.getItem('expenseSplitter_expenses');
-                
-                if (savedPeople) {
-                    appData.people = JSON.parse(savedPeople) || [];
-                }
-                if (savedExpenses) {
-                    appData.expenses = JSON.parse(savedExpenses) || [];
-                }
-                console.log('Data loaded from localStorage:', appData);
-            } catch (e) {
-                console.error('Error loading from localStorage:', e);
-                // Reset to default if parsing fails
-                appData = { people: [], expenses: [] };
+          try {
+            const savedPeople = localStorage.getItem("expenseSplitter_people");
+            const savedExpenses = localStorage.getItem(
+              "expenseSplitter_expenses"
+            );
+
+            if (savedPeople) {
+              appData.people = JSON.parse(savedPeople) || [];
             }
+            if (savedExpenses) {
+              appData.expenses = JSON.parse(savedExpenses) || [];
+            }
+            console.log("Data loaded from localStorage:", appData);
+          } catch (e) {
+            console.error("Error loading from localStorage:", e);
+            // Reset to default if parsing fails
+            appData = { people: [], expenses: [] };
+          }
         }
         renderAll();
-    }
+      }
 
-    // Save data to localStorage
-    function saveToPersistence() {
+      // Save data to localStorage
+      function saveToPersistence() {
         if (useLocalStorage) {
-            try {
-                localStorage.setItem('expenseSplitter_people', JSON.stringify(appData.people));
-                localStorage.setItem('expenseSplitter_expenses', JSON.stringify(appData.expenses));
-                console.log('Data saved to localStorage:', appData);
-            } catch (e) {
-                console.error('Error saving to localStorage:', e);
-                alert('Failed to save data. Local storage may be full or disabled.');
-            }
+          try {
+            localStorage.setItem(
+              "expenseSplitter_people",
+              JSON.stringify(appData.people)
+            );
+            localStorage.setItem(
+              "expenseSplitter_expenses",
+              JSON.stringify(appData.expenses)
+            );
+            console.log("Data saved to localStorage:", appData);
+          } catch (e) {
+            console.error("Error saving to localStorage:", e);
+            alert(
+              "Failed to save data. Local storage may be full or disabled."
+            );
+          }
         }
         renderAll();
-    }
+      }
 
-    // Clear localStorage (optional utility function for testing)
-    function clearStorage() {
+      // Clear localStorage (optional utility function for testing)
+      function clearStorage() {
         if (useLocalStorage) {
-            try {
-                localStorage.removeItem('expenseSplitter_people');
-                localStorage.removeItem('expenseSplitter_expenses');
-                appData = { people: [], expenses: [] };
-                console.log('LocalStorage cleared');
-                saveToPersistence();
-            } catch (e) {
-                console.error('Error clearing localStorage:', e);
-            }
+          try {
+            localStorage.removeItem("expenseSplitter_people");
+            localStorage.removeItem("expenseSplitter_expenses");
+            appData = { people: [], expenses: [] };
+            console.log("LocalStorage cleared");
+            saveToPersistence();
+          } catch (e) {
+            console.error("Error clearing localStorage:", e);
+          }
         }
-    }
+      }
 
-    function addPerson() {
-        const nameInput = document.getElementById('personName');
+      function addPerson() {
+        const nameInput = document.getElementById("personName");
         const name = nameInput.value.trim();
-        
+
         if (!name) {
-            alert('Please enter a name');
-            return;
+          alert("Please enter a name");
+          return;
         }
 
         if (appData.people.includes(name)) {
-            alert('This person already exists');
-            return;
+          alert("This person already exists");
+          return;
         }
 
         appData.people.push(name);
-        nameInput.value = '';
+        nameInput.value = "";
         saveToPersistence();
-    }
+      }
 
-    function removePerson(name) {
+      function removePerson(name) {
         if (confirm(`Remove ${name}? This will delete all their expenses.`)) {
-            appData.people = appData.people.filter(p => p !== name);
-            appData.expenses = appData.expenses.filter(e => e.paidBy !== name);
-            saveToPersistence();
+          appData.people = appData.people.filter((p) => p !== name);
+          appData.expenses = appData.expenses.filter((e) => e.paidBy !== name);
+          saveToPersistence();
         }
-    }
+      }
 
-    function addExpense() {
-        const desc = document.getElementById('expenseDesc').value.trim();
-        const amount = parseFloat(document.getElementById('expenseAmount').value);
-        const paidBy = document.getElementById('paidBy').value;
+      function addExpense() {
+        const desc = document.getElementById("expenseDesc").value.trim();
+        const amount = parseFloat(
+          document.getElementById("expenseAmount").value
+        );
+        const paidBy = document.getElementById("paidBy").value;
 
         if (!desc || !amount || !paidBy) {
-            alert('Please fill all fields');
-            return;
+          alert("Please fill all fields");
+          return;
         }
 
         if (amount <= 0) {
-            alert('Amount must be greater than 0');
-            return;
+          alert("Amount must be greater than 0");
+          return;
         }
 
         appData.expenses.push({
-            id: Date.now(),
-            description: desc,
-            amount: amount,
-            paidBy: paidBy
+          id: Date.now(),
+          description: desc,
+          amount: amount,
+          paidBy: paidBy,
         });
 
-        document.getElementById('expenseDesc').value = '';
-        document.getElementById('expenseAmount').value = '';
+        document.getElementById("expenseDesc").value = "";
+        document.getElementById("expenseAmount").value = "";
         saveToPersistence();
-    }
+      }
 
-    function deleteExpense(id) {
-        appData.expenses = appData.expenses.filter(e => e.id !== id);
+      function deleteExpense(id) {
+        appData.expenses = appData.expenses.filter((e) => e.id !== id);
         saveToPersistence();
-    }
+      }
 
-    function calculateSplit() {
+      function calculateSplit() {
         if (appData.people.length === 0) return {};
 
-        const totalExpenses = appData.expenses.reduce((sum, e) => sum + e.amount, 0);
+        const totalExpenses = appData.expenses.reduce(
+          (sum, e) => sum + e.amount,
+          0
+        );
         const perPersonShare = totalExpenses / appData.people.length;
 
         const balances = {};
-        appData.people.forEach(person => {
-            balances[person] = -perPersonShare;
+        appData.people.forEach((person) => {
+          balances[person] = -perPersonShare;
         });
 
-        appData.expenses.forEach(expense => {
-            balances[expense.paidBy] = (balances[expense.paidBy] || 0) + expense.amount;
+        appData.expenses.forEach((expense) => {
+          balances[expense.paidBy] =
+            (balances[expense.paidBy] || 0) + expense.amount;
         });
 
         return balances;
-    }
+      }
 
-    function renderPeopleList() {
-        const container = document.getElementById('peopleList');
+      function renderPeopleList() {
+        const container = document.getElementById("peopleList");
         if (appData.people.length === 0) {
-            container.innerHTML = '';
-            return;
+          container.innerHTML = "";
+          return;
         }
 
-        container.innerHTML = appData.people.map(person => `
+        container.innerHTML = appData.people
+          .map(
+            (person) => `
             <div class="expense-item">
                 <span style="font-weight: 600;">${person}</span>
                 <button class="btn-delete" onclick="removePerson('${person}')">Remove</button>
             </div>
-        `).join('');
-    }
+        `
+          )
+          .join("");
+      }
 
-    function renderPaidByDropdown() {
-        const select = document.getElementById('paidBy');
-        select.innerHTML = appData.people.length === 0 
+      function renderPaidByDropdown() {
+        const select = document.getElementById("paidBy");
+        select.innerHTML =
+          appData.people.length === 0
             ? '<option value="">Add people first</option>'
-            : appData.people.map(p => `<option value="${p}">${p}</option>`).join('');
-    }
+            : appData.people
+                .map((p) => `<option value="${p}">${p}</option>`)
+                .join("");
+      }
 
-    function renderExpenses() {
-        const container = document.getElementById('expensesList');
-        
+      function renderExpenses() {
+        const container = document.getElementById("expensesList");
+
         if (appData.expenses.length === 0) {
-            container.innerHTML = `
+          container.innerHTML = `
                 <div class="empty-state">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -452,62 +498,75 @@
                     <p>No expenses yet. Add your first expense above!</p>
                 </div>
             `;
-            return;
+          return;
         }
 
-        container.innerHTML = appData.expenses.map(expense => `
+        container.innerHTML = appData.expenses
+          .map(
+            (expense) => `
             <div class="expense-item">
                 <div class="expense-info">
                     <div class="expense-title">${expense.description}</div>
                     <div class="expense-details">Paid by ${expense.paidBy}</div>
                 </div>
                 <div class="expense-amount">$${expense.amount.toFixed(2)}</div>
-                <button class="btn-delete" onclick="deleteExpense(${expense.id})">Delete</button>
+                <button class="btn-delete" onclick="deleteExpense(${
+                  expense.id
+                })">Delete</button>
             </div>
-        `).join('');
-    }
+        `
+          )
+          .join("");
+      }
 
-    function renderSummary() {
-        const summary = document.getElementById('summary');
-        const details = document.getElementById('settlementDetails');
+      function renderSummary() {
+        const summary = document.getElementById("summary");
+        const details = document.getElementById("settlementDetails");
 
         if (appData.people.length === 0 || appData.expenses.length === 0) {
-            summary.style.display = 'none';
-            return;
+          summary.style.display = "none";
+          return;
         }
 
         const balances = calculateSplit();
-        const totalExpenses = appData.expenses.reduce((sum, e) => sum + e.amount, 0);
+        const totalExpenses = appData.expenses.reduce(
+          (sum, e) => sum + e.amount,
+          0
+        );
 
         let html = `<div class="person-split" style="background: rgba(255,255,255,0.2); margin-bottom: 15px;">
             <span>Total Expenses:</span>
             <span style="font-size: 1.3em;">$${totalExpenses.toFixed(2)}</span>
         </div>`;
 
-        html += Object.entries(balances).map(([person, balance]) => {
-            const status = balance > 0 ? 'gets back' : 'owes';
-            const color = balance > 0 ? '#4ade80' : '#fbbf24';
+        html += Object.entries(balances)
+          .map(([person, balance]) => {
+            const status = balance > 0 ? "gets back" : "owes";
+            const color = balance > 0 ? "#4ade80" : "#fbbf24";
             return `
                 <div class="person-split">
                     <span class="person-name">${person} ${status}</span>
-                    <span class="person-amount" style="color: ${color}">$${Math.abs(balance).toFixed(2)}</span>
+                    <span class="person-amount" style="color: ${color}">$${Math.abs(
+              balance
+            ).toFixed(2)}</span>
                 </div>
             `;
-        }).join('');
+          })
+          .join("");
 
         details.innerHTML = html;
-        summary.style.display = 'block';
-    }
+        summary.style.display = "block";
+      }
 
-    function renderAll() {
+      function renderAll() {
         renderPeopleList();
         renderPaidByDropdown();
         renderExpenses();
         renderSummary();
-    }
+      }
 
-    // Initialize
-    loadFromStorage();
-</script>
-</body>
+      // Initialize
+      loadFromStorage();
+    </script>
+  </body>
 </html>
